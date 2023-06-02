@@ -303,22 +303,22 @@ class Menu():
     
     class Button:
         def __init__(self, x, y, width, height, text, xoff=0, yoff=0):
-            self.x = x
-            self.y = y
-            self.height = height
-            self.width = width
-            self.background = WHITE
-            self.text = text
-            self.x_offset = xoff
-            self.y_offset = yoff
+            self.x=x
+            self.y=y
+            self.height=height
+            self.width=width
+            self.background=WHITE
+            self.text=text
+            self.x_offset=xoff
+            self.y_offset=yoff
 
         def draw(self, surface):
             pygame.draw.ellipse(surface, self.background, [self.x, self.y, self.width, self.height], 0)
-            text = font.render(self.text, True, BLACK)     
+            text=font.render(self.text, True, BLACK)     
             surface.blit(text, (self.x + self.x_offset, self.y + self.y_offset))
         
         def click_handle(self):
-            pos = pygame.mouse.get_pos()
+            pos=pygame.mouse.get_pos()
             if pos[0] > self.x and pos[1] > self.y and pos[0] < (self.x + self.width) and pos[1] < (self.y + self.height):
                 return True
             else:
@@ -326,32 +326,32 @@ class Menu():
 
 # Initialize pygame and sets screen size and caption
 def center_window(window, width, height):
-    screen_width = window.winfo_screenwidth()
-    screen_height = window.winfo_screenheight()
-    x = (screen_width - width) // 2
-    y = (screen_height - height) // 2
+    screen_width=window.winfo_screenwidth()
+    screen_height=window.winfo_screenheight()
+    x=(screen_width - width) // 2
+    y=(screen_height - height) // 2
     window.geometry(f"{width}x{height}+{x}+{y}")
 
 def start():
     def level_nsquares1():
         global NSQUARES
         global NBOMBS
-        NSQUARES = 8
+        NSQUARES=8
         NBOMBS = 8
         level.destroy()
 
     def level_nsquares2():
         global NSQUARES
         global NBOMBS
-        NSQUARES = 10
-        NBOMBS = 10
+        NSQUARES=10
+        NBOMBS=10
         level.destroy()
 
     def level_nsquares3():
         global NSQUARES
         global NBOMBS
-        NSQUARES = 12
-        NBOMBS = 12
+        NSQUARES=12
+        NBOMBS=12
         level.destroy()
 
     def on_closing():
@@ -359,45 +359,42 @@ def start():
         pygame.quit()
         sys.exit()
 
-    level = Tk()
+    level=Tk()
     level.title("Minesweeper")
     center_window(level, 500, 500)
     # Create a canvas widget
-    canvas = Canvas(level, width=500, height=500)
+    canvas=Canvas(level, width=500, height=500)
     canvas.pack()
     # Load the image
-    image = Image.open("background1.png")
+    image=Image.open("background1.png")
     # Resize the image to fit the canvas
-    resized_image = image.resize((500, 500), Image.LANCZOS)
+    resized_image=image.resize((500, 500), Image.LANCZOS)
     # Convert the image to PhotoImage
-    background_image = ImageTk.PhotoImage(resized_image)
+    background_image=ImageTk.PhotoImage(resized_image)
     # Create a Label widget with the image as its background
     canvas.create_image(0, 0, anchor='nw', image=background_image)
     # Add the buttons and other widgets on top of the background image
     Label(level, text="CHOOSE YOUR LEVEL OF DIFFICULTY:", font=('Times 15 bold')).place(x=65, y=50)
-    button_1 = Button(level, text="EASY", command=level_nsquares1, width=15, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
-    button_1.place(x=170, y=120)
-    button_2 = Button(level, text="INTERMEDIATE", command=level_nsquares2, width=15, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
-    button_2.place(x=170, y=200)
-    button_3 = Button(level, text="DIFFICULT", command=level_nsquares3, width=15, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
-    button_3.place(x=170, y=280)
+    Button(level, text="EASY", command=level_nsquares1, width=15, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=170, y=120)
+    Button(level, text="INTERMEDIATE", command=level_nsquares2, width=15, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=170, y=200)
+    Button(level, text="DIFFICULT", command=level_nsquares3, width=15, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=170, y=280)
     level.protocol("WM_DELETE_WINDOW", on_closing)
     level.mainloop()
 
 def over(game):
     def Restart():
         global proceed
-        proceed = "restart"
+        proceed="restart"
         over.destroy()
 
     def Try_Again():
         global proceed
-        proceed = "try again"
+        proceed="try again"
         over.destroy()
 
     def Next_Level():
         global proceed 
-        proceed ="next level"
+        proceed="next level"
         over.destroy()
 
     def Quit():
@@ -441,86 +438,81 @@ def over(game):
         # Load the image
         image = Image.open("background2.png")
         # Resize the image to fit the canvas
-        resized_image = image.resize((500, 500), Image.LANCZOS)
+        resized_image=image.resize((500, 500), Image.LANCZOS)
         # Convert the image to PhotoImage
-        background_image = ImageTk.PhotoImage(resized_image)
+        background_image=ImageTk.PhotoImage(resized_image)
         # Create a Label widget with the image as its background
         canvas.create_image(0, 0, anchor='nw', image=background_image)
-        Label(over, text = "HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x=85, y = 50)
-        button_1 = Button(over, text="NEXT LEVEL", command=Next_Level, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
-        button_1.place(x=150, y=100)
-        button_2 = Button(over, text="RESTART", command=Restart, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
-        button_2.place(x=150, y=150)
-        button_3 = Button(over, text="QUIT", command=Quit, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
-        button_3.place(x=150, y=200)
+        Label(over, text="HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x=85, y=50)
+        Button(over, text="NEXT LEVEL", command=Next_Level, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=100)
+        Button(over, text="RESTART", command=Restart, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=150)
+        Button(over, text="QUIT", command=Quit, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=200)
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
     elif game.game_lost:
-        over = Tk()
+        over=Tk()
         over.geometry("500x500")
         over.title("Minesweeper")
         center_window(over, 500, 500)
         # Create a canvas widget
-        canvas = Canvas(over, width=500, height=500)
+        canvas=Canvas(over, width=500, height=500)
         canvas.pack()
         # Load the image
-        image = Image.open("background2.png")
+        image=Image.open("background2.png")
         # Resize the image to fit the canvas
-        resized_image = image.resize((500, 500), Image.LANCZOS)
+        resized_image=image.resize((500, 500), Image.LANCZOS)
         # Convert the image to PhotoImage
-        background_image = ImageTk.PhotoImage(resized_image)
+        background_image=ImageTk.PhotoImage(resized_image)
         # Create a Label widget with the image as its background
         canvas.create_image(0, 0, anchor='nw', image=background_image)
-        Label(over, text= "HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x = 85, y = 30)
+        Label(over, text="HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x = 85, y = 30)
         Button(over, text="TRY AGAIN", command=Try_Again, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=100)
-        button_2 = Button(over, text="RESTART", command=Restart, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=180)
-        button_3 = Button(over, text="QUIT", command=Quit, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
-        button_3.place(x=150, y=260)
+        Button(over, text="RESTART", command=Restart, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=180)
+        Button(over, text="QUIT", command=Quit, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=260)
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
     
     
-NSQUARES = 0
-NBOMBS = 0
-proceed = ""
+NSQUARES=0
+NBOMBS=0
+proceed=""
 start()
-game_over = False
-click_count = 0
+game_over=False
+click_count=0
 # Main loop
 while True:
     pygame.init()
     pygame.display.set_caption("Minesweeper")
     # Font to use in the entire game
-    font = pygame.font.Font('freesansbold.ttf', 24)
-    size = (NSQUARES*(WIDTH + MARGIN) + MARGIN, (NSQUARES*(HEIGHT + MARGIN) + MARGIN) + MENU_SIZE)
-    screen = pygame.display.set_mode(size, pygame.RESIZABLE)
+    font=pygame.font.Font('freesansbold.ttf', 24)
+    size=(NSQUARES*(WIDTH + MARGIN) + MARGIN, (NSQUARES*(HEIGHT + MARGIN) + MARGIN) + MENU_SIZE)
+    screen=pygame.display.set_mode(size, pygame.RESIZABLE)
     # Create instances for Game and Menu
-    game = Game(NSQUARES, NBOMBS)
-    menu = Menu(NSQUARES)
-    clock = pygame.time.Clock()
+    game=Game(NSQUARES, NBOMBS)
+    menu=Menu(NSQUARES)
+    clock=pygame.time.Clock()
     while True:
         for event in pygame.event.get():
             # Closes the game if user clicked the X
             if event.type == pygame.QUIT:  
                 pygame.quit()
                 sys.exit()
-
             # Mouse clicks event
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Get mouse position
-                position = pygame.mouse.get_pos()
+                position=pygame.mouse.get_pos()
                 # Change the screen coordinates to grid coordinates and caps max values
-                column = position[0] // (WIDTH + MARGIN)
-                row = (position[1] - MENU_SIZE) // (HEIGHT + MARGIN)
+                column=position[0] // (WIDTH + MARGIN)
+                row=(position[1] - MENU_SIZE) // (HEIGHT + MARGIN)
                 if row >= game.squares_y:
-                    row = game.squares_y - 1
+                    row=game.squares_y - 1
                 if column >= game.squares_x:
-                    column = game.squares_x - 1
+                    column=game.squares_x - 1
                 if row >= 0:
                     game.click_handle(row, column, event.button)
                 else:
                     menu.click_handle(game)
-                if game.game_lost == True or game.game_won == True:
+                if game.game_lost or game.game_won:
                     click_count += 1
                     game_over = True
             # Event for screen resize    
@@ -535,7 +527,7 @@ while True:
         clock.tick(60)
         # Update the screen
         pygame.display.flip()
-        if game_over == True and click_count == 2:
+        if game_over and click_count == 2:
             pygame.quit()
             break        
     over(game)
