@@ -28,7 +28,7 @@ RIGHT_CLICK = 3
 
 # Class that holds the game logic          
 class Game:
-   def __init__(self, NSQUARES, NBOMBS):
+    def __init__(self, NSQUARES, NBOMBS):
         # Create a grid of NSQUARES x NSQUARES
         self.grid = [[Cell(x, y) for x in range(NSQUARES)] for y in range(NSQUARES)]
         self.init = False
@@ -40,7 +40,7 @@ class Game:
         self.resize = False
         self.flag_count = 0
 
-   def draw(self):
+    def draw(self):
         # Set the screen background color
         screen.fill(BLACK)
         bomb_image = pygame.image.load("mine.png")
