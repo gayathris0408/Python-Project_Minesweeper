@@ -159,7 +159,7 @@ class Game:
                     if self.grid[row][column].has_bomb:
                         self.grid[row][column].has_flag = True
         
-   def count_flags(self):
+    def count_flags(self):
         total_flags = 0
         for row in range(self.squares_y):
             for column in range(self.squares_x):
