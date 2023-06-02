@@ -1,1 +1,1 @@
-# python-project
+# Minesweeper - Python Project
