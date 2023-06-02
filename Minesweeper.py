@@ -26,12 +26,9 @@ MENU_SIZE = 40
 LEFT_CLICK = 1
 RIGHT_CLICK = 3
 
-
 # Class that holds the game logic          
 class Game:
-    
-    
-    def __init__(self, NSQUARES, NBOMBS):
+   def __init__(self, NSQUARES, NBOMBS):
         # Create a grid of NSQUARES x NSQUARES
         self.grid = [[Cell(x, y) for x in range(NSQUARES)] for y in range(NSQUARES)]
         self.init = False
@@ -43,14 +40,14 @@ class Game:
         self.resize = False
         self.flag_count = 0
 
-    def draw(self):
+   def draw(self):
         # Set the screen background color
         screen.fill(BLACK)
         bomb_image = pygame.image.load("mine.png")
-        IMAGE_SIZE = (40,40)
-        bomb_image = pygame.transform.scale(bomb_image,IMAGE_SIZE)
+        IMAGE_SIZE = (40, 40)
+        bomb_image = pygame.transform.scale(bomb_image, IMAGE_SIZE)
         flag_image = pygame.image.load("flag.png")
-        flag_image = pygame.transform.scale(flag_image,IMAGE_SIZE)
+        flag_image = pygame.transform.scale(flag_image, IMAGE_SIZE)
         # Draw the grid
         for row in range(self.squares_y):
             for column in range(self.squares_x):
@@ -72,17 +69,15 @@ class Game:
                     y = ((row)*(MARGIN + HEIGHT)) + 45
                     # Draw the bomb image at the calculated position
                     screen.blit(self.grid[row][column].flag_image, (x, y))
-                if self.grid[row][column].has_bomb == True and self.grid[row][column].is_visible == True:
+                if self.grid[row][column].has_bomb and self.grid[row][column].is_visible:
                     pass
-                elif self.grid[row][column].has_flag == True:
+                elif self.grid[row][column].has_flag:
                     pass
                 else:
-                    pygame.draw.rect(screen,
-                                color,
+                    pygame.draw.rect(screen, color,
                                 [(MARGIN + WIDTH) * column + MARGIN,
                                 (MARGIN + HEIGHT) * row + MARGIN + MENU_SIZE,
-                                WIDTH,
-                                HEIGHT])
+                                WIDTH, HEIGHT])
                 self.grid[row][column].show_text()
         
     # Adjusts the grid when the screen size has changed
@@ -115,9 +110,8 @@ class Game:
             self.num_bombs = 1
         elif self.num_bombs > (self.squares_x * self.squares_y) // 3:
             self.num_bombs = self.squares_x * self.squares_y // 3
-         
-
-    # Place BOMBS on random places
+    
+   # Place BOMBS on random places
     def place_bombs(self, row, column):
         bombplaced = 0
         while bombplaced < self.num_bombs:
@@ -165,19 +159,18 @@ class Game:
                     if self.grid[row][column].has_bomb:
                         self.grid[row][column].has_flag = True
         
-    
-    def count_flags(self):
+   def count_flags(self):
         total_flags = 0
         for row in range(self.squares_y):
             for column in range(self.squares_x):
                 if self.grid[row][column].has_flag:
-                            total_flags += 1
+                    total_flags += 1
         self.flag_count = total_flags
 
     # Handle for grid clicks
     def click_handle(self, row, column, button):
         if button == LEFT_CLICK and self.game_won:
-                pass
+            pass
         elif button == LEFT_CLICK and not self.grid[row][column].has_flag: 
             if not self.game_lost:
                 # Place bombs after first click so you never click a bomb first
@@ -204,8 +197,7 @@ class Game:
                 self.grid[row][column].has_flag = False
             self.count_flags()
 
-
-    # Game Sub-Class for each Cell of the grid
+# Game Sub-Class for each Cell of the grid
 class Cell:
 
     def __init__(self, x, y):
@@ -232,8 +224,8 @@ class Cell:
         if not self.test:
             self.test = True
             if not self.has_bomb:
-                for column in range(self.x - 1 , self.x + 2):
-                    for row in range(self.y - 1 , self.y + 2):
+                for column in range(self.x - 1, self.x + 2):
+                    for row in range(self.y - 1, self.y + 2):
                         if (row >= 0 and row < squaresx and column >= 0 and column < squaresy
                             and not (column == self.x and row == self.y)
                             and game.grid[row][column].has_bomb):
@@ -246,17 +238,16 @@ class Cell:
         for row_off in range(-1, 2):
             for column_off in range(-1, 2):
                 if ((row_off == 0 or column_off == 0) and row_off != column_off
-                    and row+row_off >= 0 and column+column_off >=0 and row+row_off < squaresx and column+column_off < squaresy):
+                    and row + row_off >= 0 and column + column_off >= 0 and row + row_off < squaresx and column+column_off < squaresy):
                         game.grid[row + row_off][column + column_off].count_bombs(game.squares_y, game.squares_x)
                         if not game.grid[row + row_off][column + column_off].is_visible and not game.grid[row + row_off][column + column_off].has_bomb:  
-                                game.grid[row + row_off][column + column_off].is_visible = True
-                                game.grid[row + row_off][column + column_off].has_flag = False
-                                if game.grid[row + row_off][column + column_off].bomb_count == 0: 
-                                    game.grid[row + row_off][column + column_off].open_neighbours(game.squares_y, game.squares_x)
+                            game.grid[row + row_off][column + column_off].is_visible = True
+                            game.grid[row + row_off][column + column_off].has_flag = False
+                            if game.grid[row + row_off][column + column_off].bomb_count == 0: 
+                                game.grid[row + row_off][column + column_off].open_neighbours(game.squares_y, game.squares_x)
 
 
 class Menu():
-
     def __init__(self,NSQUARES):
         self.width = pygame.display.get_surface().get_width() - 2*MARGIN
         self.btn_minus = self.Button(10, 10, 20, 20, "-", 6, -3)
@@ -275,9 +266,9 @@ class Menu():
         if NSQUARES == 8:
             self.label_game_end = self.Label(120, 10)
         if NSQUARES == 10:
-            self.label_game_end = self.Label(150,10)
+            self.label_game_end = self.Label(150, 10)
         if NSQUARES == 12:
-            self.label_game_end = self.Label(200,10)
+            self.label_game_end = self.Label(200, 10)
         self.label_flags = self.Label(self.width - 50, 10)
 
     def click_handle(self, obj):
@@ -298,10 +289,8 @@ class Menu():
             self.label_game_end.show(screen, "Game Over")
         elif obj.game_won:
             self.label_game_end.show(screen, "You Won!")
-    
-
+   
     class Label:
-    
         def __init__(self, x, y):
             self.x = x
             self.y = y
@@ -312,9 +301,7 @@ class Menu():
             self.text = font.render(text, True, BLACK)     
             surface.blit(self.text, (self.x, self.y))
     
-
     class Button:
-
         def __init__(self, x, y, width, height, text, xoff=0, yoff=0):
             self.x = x
             self.y = y
@@ -337,9 +324,6 @@ class Menu():
             else:
                 return False
 
-
-# Initialize pygame and sets screen size and caption
-
 # Initialize pygame and sets screen size and caption
 def center_window(window, width, height):
     screen_width = window.winfo_screenwidth()
@@ -347,6 +331,7 @@ def center_window(window, width, height):
     x = (screen_width - width) // 2
     y = (screen_height - height) // 2
     window.geometry(f"{width}x{height}+{x}+{y}")
+
 def start():
     def level_nsquares1():
         global NSQUARES
@@ -374,25 +359,20 @@ def start():
         pygame.quit()
         sys.exit()
 
-
     level = Tk()
     level.title("Minesweeper")
     center_window(level, 500, 500)
-
     # Create a canvas widget
     canvas = Canvas(level, width=500, height=500)
     canvas.pack()
-
     # Load the image
     image = Image.open("background1.png")
     # Resize the image to fit the canvas
     resized_image = image.resize((500, 500), Image.LANCZOS)
     # Convert the image to PhotoImage
     background_image = ImageTk.PhotoImage(resized_image)
-
     # Create a Label widget with the image as its background
     canvas.create_image(0, 0, anchor='nw', image=background_image)
-
     # Add the buttons and other widgets on top of the background image
     Label(level, text="CHOOSE YOUR LEVEL OF DIFFICULTY:", font=('Times 15 bold')).place(x=65, y=50)
     button_1 = Button(level, text="EASY", command=level_nsquares1, width=15, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
@@ -401,7 +381,6 @@ def start():
     button_2.place(x=170, y=200)
     button_3 = Button(level, text="DIFFICULT", command=level_nsquares3, width=15, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
     button_3.place(x=170, y=280)
-
     level.protocol("WM_DELETE_WINDOW", on_closing)
     level.mainloop()
 
@@ -430,87 +409,73 @@ def over(game):
         pygame.quit()
         sys.exit()
         
-    if game.game_won == True and NSQUARES == 12:
+    if game.game_won and NSQUARES == 12:
         over = Tk()
         over.title("Minesweeper")
         center_window(over, 500, 500)
-        
         # Create a canvas widget
         canvas = Canvas(over, width=500, height=500)
         canvas.pack()
-
         # Load the image
         image = Image.open("background2.png")
         # Resize the image to fit the canvas
         resized_image = image.resize((500, 500), Image.LANCZOS)
         # Convert the image to PhotoImage
         background_image = ImageTk.PhotoImage(resized_image)
-
         # Create a Label widget with the image as its background
         canvas.create_image(0, 0, anchor='nw', image=background_image)
-        
-        Label(over, text= "YOU HAVE WON THE MOST DIFFICULT LEVEL!", font=('Times 14 bold')).place(x = 30, y = 50)
-        Label(over, text= "HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x = 85, y = 100)
-        Button(over, text = "RESTART", command = Restart, width = 20, fg = "dark blue", font = "Times 14", bd = 2, bg = "light blue", relief = "groove").place(x = 150, y = 170)
-        Button(over, text = "QUIT", command = Quit, width = 20, fg = "dark blue", font = "Times 14", bd = 2, bg = "light blue", relief = "groove").place(x = 150, y = 230)
+        Label(over, text="YOU HAVE WON THE MOST DIFFICULT LEVEL!", font=('Times 14 bold')).place(x=30, y=50)
+        Label(over, text="HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x=85, y=100)
+        Button(over, text="RESTART", command=Restart, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=170)
+        Button(over, text="QUIT", command=Quit, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=230)
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
-    elif game.game_won == True and (NSQUARES == 8 or NSQUARES == 10):
+    elif game.game_won and (NSQUARES == 8 or NSQUARES == 10):
         over = Tk()
         over.geometry("500x500")
         over.title("Minesweeper")
         center_window(over, 500, 500)
-        
         # Create a canvas widget
         canvas = Canvas(over, width=500, height=500)
         canvas.pack()
-
         # Load the image
         image = Image.open("background2.png")
         # Resize the image to fit the canvas
         resized_image = image.resize((500, 500), Image.LANCZOS)
         # Convert the image to PhotoImage
         background_image = ImageTk.PhotoImage(resized_image)
-
         # Create a Label widget with the image as its background
         canvas.create_image(0, 0, anchor='nw', image=background_image)
-        
-        Label(over, text= "HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x = 85, y = 50)
-        button_1 = Button(over, text = "NEXT LEVEL", command = Next_Level, width = 20, fg = "dark blue", font = "Times 14", bd = 2, bg = "light blue", relief = "groove")
-        button_1.place(x = 150, y = 100)
-        button_2 = Button(over, text = "RESTART", command = Restart, width = 20, fg = "dark blue", font = "Times 14", bd = 2, bg = "light blue", relief = "groove")
-        button_2.place(x = 150, y = 150)
-        button_3 = Button(over, text = "QUIT", command = Quit, width = 20, fg = "dark blue", font = "Times 14", bd = 2, bg = "light blue", relief = "groove")
-        button_3.place(x = 150, y = 200)
+        Label(over, text = "HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x=85, y = 50)
+        button_1 = Button(over, text="NEXT LEVEL", command=Next_Level, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
+        button_1.place(x=150, y=100)
+        button_2 = Button(over, text="RESTART", command=Restart, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
+        button_2.place(x=150, y=150)
+        button_3 = Button(over, text="QUIT", command=Quit, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
+        button_3.place(x=150, y=200)
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
-    elif game.game_lost == True:
+    elif game.game_lost:
         over = Tk()
         over.geometry("500x500")
         over.title("Minesweeper")
         center_window(over, 500, 500)
-        
         # Create a canvas widget
         canvas = Canvas(over, width=500, height=500)
         canvas.pack()
-
         # Load the image
         image = Image.open("background2.png")
         # Resize the image to fit the canvas
         resized_image = image.resize((500, 500), Image.LANCZOS)
         # Convert the image to PhotoImage
         background_image = ImageTk.PhotoImage(resized_image)
-
         # Create a Label widget with the image as its background
         canvas.create_image(0, 0, anchor='nw', image=background_image)
-        
         Label(over, text= "HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x = 85, y = 30)
-        button_1 = Button(over, text = "TRY AGAIN", command = Try_Again, width = 20, fg = "dark blue", font = "Times 14", bd = 2, bg = "light blue", relief = "groove")
-        button_1.place(x = 150, y = 100)
-        button_2 = Button(over, text = "RESTART", command = Restart, width = 20, fg = "dark blue", font = "Times 14", bd = 2, bg = "light blue", relief = "groove")
-        button_2.place(x = 150, y = 180)
-        button_3 = Button(over, text = "QUIT", command = Quit, width = 20, fg = "dark blue", font = "Times 14", bd = 2, bg = "light blue", relief = "groove")
-        button_3.place(x = 150, y = 260)
+        Button(over, text="TRY AGAIN", command=Try_Again, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=100)
+        button_2 = Button(over, text="RESTART", command=Restart, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=180)
+        button_3 = Button(over, text="QUIT", command=Quit, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove")
+        button_3.place(x=150, y=260)
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
     
@@ -586,27 +551,3 @@ while True:
     if proceed == "try again":
         game_over = False
         click_count = 0
-
-
-# In[22]:
-
-
-
-
-
-
-
-    
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
