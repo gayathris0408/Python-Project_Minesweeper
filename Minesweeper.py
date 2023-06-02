@@ -530,6 +530,10 @@ while True:
                     game.click_handle(row, column, event.button)
                 else:
                     menu.click_handle(game)
+                # Deal with game loss or win
+                if game.game_lost or game.game_won:
+                    click_count += 1
+                    game_over = True
             # Event for screen resize
             elif event.type == pygame.VIDEORESIZE:
                 if game.resize: 
@@ -537,10 +541,7 @@ while True:
                     game.reset_game()
                 else:  
                     game.resize = True
-            # Deal with game loss or win
-            if game.game_lost or game.game_won:
-                click_count += 1
-                game_over = True
+            
         game.draw()
         menu.draw(game)
         clock.tick(60)
