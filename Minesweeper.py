@@ -484,13 +484,13 @@ while True:
     pygame.init()
     pygame.display.set_caption("Minesweeper")
     # Font to use in the entire game
-    font=pygame.font.Font('freesansbold.ttf', 24)
-    size=(NSQUARES*(WIDTH + MARGIN) + MARGIN, (NSQUARES*(HEIGHT + MARGIN) + MARGIN) + MENU_SIZE)
-    screen=pygame.display.set_mode(size, pygame.RESIZABLE)
+    font = pygame.font.Font('freesansbold.ttf', 24)
+    size = (NSQUARES*(WIDTH + MARGIN) + MARGIN, (NSQUARES*(HEIGHT + MARGIN) + MARGIN) + MENU_SIZE)
+    screen = pygame.display.set_mode(size, pygame.RESIZABLE)
     # Create instances for Game and Menu
     game=Game(NSQUARES, NBOMBS)
-    menu=Menu(NSQUARES)
-    clock=pygame.time.Clock()
+    menu = Menu(NSQUARES)
+    clock = pygame.time.Clock()
     while True:
         for event in pygame.event.get():
             # Closes the game if user clicked the X
@@ -500,14 +500,14 @@ while True:
             # Mouse clicks event
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Get mouse position
-                position=pygame.mouse.get_pos()
+                position = pygame.mouse.get_pos()
                 # Change the screen coordinates to grid coordinates and caps max values
-                column=position[0] // (WIDTH + MARGIN)
+                column = position[0] // (WIDTH + MARGIN)
                 row=(position[1] - MENU_SIZE) // (HEIGHT + MARGIN)
                 if row >= game.squares_y:
                     row=game.squares_y - 1
                 if column >= game.squares_x:
-                    column=game.squares_x - 1
+                    column = game.squares_x - 1
                 if row >= 0:
                     game.click_handle(row, column, event.button)
                 else:
