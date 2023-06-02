@@ -336,22 +336,22 @@ def start():
     def level_nsquares1():
         global NSQUARES
         global NBOMBS
-        NSQUARES=8
+        NSQUARES = 8
         NBOMBS = 8
         level.destroy()
 
     def level_nsquares2():
         global NSQUARES
         global NBOMBS
-        NSQUARES=10
-        NBOMBS=10
+        NSQUARES = 10
+        NBOMBS = 10
         level.destroy()
 
     def level_nsquares3():
         global NSQUARES
         global NBOMBS
-        NSQUARES=12
-        NBOMBS=12
+        NSQUARES = 12
+        NBOMBS = 12
         level.destroy()
 
     def on_closing():
@@ -359,18 +359,18 @@ def start():
         pygame.quit()
         sys.exit()
 
-    level=Tk()
+    level = Tk()
     level.title("Minesweeper")
     center_window(level, 500, 500)
     # Create a canvas widget
-    canvas=Canvas(level, width=500, height=500)
+    canvas = Canvas(level, width=500, height=500)
     canvas.pack()
     # Load the image
     image=Image.open("background1.png")
     # Resize the image to fit the canvas
-    resized_image=image.resize((500, 500), Image.LANCZOS)
+    resized_image = image.resize((500, 500), Image.LANCZOS)
     # Convert the image to PhotoImage
-    background_image=ImageTk.PhotoImage(resized_image)
+    background_image = ImageTk.PhotoImage(resized_image)
     # Create a Label widget with the image as its background
     canvas.create_image(0, 0, anchor='nw', image=background_image)
     # Add the buttons and other widgets on top of the background image
@@ -384,17 +384,17 @@ def start():
 def over(game):
     def Restart():
         global proceed
-        proceed="restart"
+        proceed = "restart"
         over.destroy()
 
     def Try_Again():
         global proceed
-        proceed="try again"
+        proceed = "try again"
         over.destroy()
 
     def Next_Level():
         global proceed 
-        proceed="next level"
+        proceed = "next level"
         over.destroy()
 
     def Quit():
@@ -438,9 +438,9 @@ def over(game):
         # Load the image
         image = Image.open("background2.png")
         # Resize the image to fit the canvas
-        resized_image=image.resize((500, 500), Image.LANCZOS)
+        resized_image = image.resize((500, 500), Image.LANCZOS)
         # Convert the image to PhotoImage
-        background_image=ImageTk.PhotoImage(resized_image)
+        background_image = ImageTk.PhotoImage(resized_image)
         # Create a Label widget with the image as its background
         canvas.create_image(0, 0, anchor='nw', image=background_image)
         Label(over, text="HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x=85, y=50)
@@ -450,19 +450,19 @@ def over(game):
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
     elif game.game_lost:
-        over=Tk()
+        over = Tk()
         over.geometry("500x500")
         over.title("Minesweeper")
         center_window(over, 500, 500)
         # Create a canvas widget
-        canvas=Canvas(over, width=500, height=500)
+        canvas = Canvas(over, width=500, height=500)
         canvas.pack()
         # Load the image
         image = Image.open("background2.png")
         # Resize the image to fit the canvas
-        resized_image=image.resize((500, 500), Image.LANCZOS)
+        resized_image = image.resize((500, 500), Image.LANCZOS)
         # Convert the image to PhotoImage
-        background_image=ImageTk.PhotoImage(resized_image)
+        background_image = ImageTk.PhotoImage(resized_image)
         # Create a Label widget with the image as its background
         canvas.create_image(0, 0, anchor='nw', image=background_image)
         Label(over, text="HOW DO YOU WANT TO PROCEED?", font=('Times 14 bold')).place(x = 85, y = 30)
@@ -473,12 +473,12 @@ def over(game):
         over.mainloop()
     
     
-NSQUARES=0
-NBOMBS=0
-proceed=""
+NSQUARES = 0
+NBOMBS = 0
+proceed = ""
 start()
-game_over=False
-click_count=0
+game_over = False
+click_count = 0
 # Main loop
 while True:
     pygame.init()
@@ -488,7 +488,7 @@ while True:
     size = (NSQUARES*(WIDTH + MARGIN) + MARGIN, (NSQUARES*(HEIGHT + MARGIN) + MARGIN) + MENU_SIZE)
     screen = pygame.display.set_mode(size, pygame.RESIZABLE)
     # Create instances for Game and Menu
-    game=Game(NSQUARES, NBOMBS)
+    game = Game(NSQUARES, NBOMBS)
     menu = Menu(NSQUARES)
     clock = pygame.time.Clock()
     while True:
@@ -503,7 +503,7 @@ while True:
                 position = pygame.mouse.get_pos()
                 # Change the screen coordinates to grid coordinates and caps max values
                 column = position[0] // (WIDTH + MARGIN)
-                row=(position[1] - MENU_SIZE) // (HEIGHT + MARGIN)
+                row = (position[1] - MENU_SIZE) // (HEIGHT + MARGIN)
                 if row >= game.squares_y:
                     row=game.squares_y - 1
                 if column >= game.squares_x:
