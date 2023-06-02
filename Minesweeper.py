@@ -16,15 +16,23 @@ BLACK = (0, 0, 0)
 WHITE = (239, 255, 255)
 RED = (255, 0, 0)
 TURQUOISE = (50, 127, 127)
-# Sets the WIDTH and HEIGHT of each grid location
+# Set the WIDTH and HEIGHT of each grid location
 WIDTH = 40
 HEIGHT = 40
-# Sets the starting number of squares
-# Sets the margin between each cell
+# Set the margin between each cell
 MARGIN = 5
+# Set size of menu
 MENU_SIZE = 40
+# Define LEFT_CLICK and RIGHT_CLICK
 LEFT_CLICK = 1
 RIGHT_CLICK = 3
+
+# Assign initial values to variables
+NSQUARES = 0
+NBOMBS = 0
+proceed = ""
+game_over = False
+click_count = 0
 
 # Class that holds the game logic          
 class Game:
@@ -43,9 +51,11 @@ class Game:
     def draw(self):
         # Set the screen background color
         screen.fill(BLACK)
-        bomb_image = pygame.image.load("mine.png")
         IMAGE_SIZE = (40, 40)
+        # Load the mine icon
+        bomb_image = pygame.image.load("mine.png")
         bomb_image = pygame.transform.scale(bomb_image, IMAGE_SIZE)
+        # Load the flag icon
         flag_image = pygame.image.load("flag.png")
         flag_image = pygame.transform.scale(flag_image, IMAGE_SIZE)
         # Draw the grid
@@ -67,7 +77,7 @@ class Game:
                     # Calculate the position based on row and column indices
                     x = ((column)*(MARGIN + WIDTH)) + MARGIN
                     y = ((row)*(MARGIN + HEIGHT)) + 45
-                    # Draw the bomb image at the calculated position
+                    # Draw the flag image at the calculated position
                     screen.blit(self.grid[row][column].flag_image, (x, y))
                 if self.grid[row][column].has_bomb and self.grid[row][column].is_visible:
                     pass
@@ -111,7 +121,7 @@ class Game:
         elif self.num_bombs > (self.squares_x * self.squares_y) // 3:
             self.num_bombs = self.squares_x * self.squares_y // 3
     
-   # Place BOMBS on random places
+   # Place bombs on random squares
     def place_bombs(self, row, column):
         bombplaced = 0
         while bombplaced < self.num_bombs:
@@ -145,6 +155,7 @@ class Game:
                 self.game_won = False
                 self.flag_count = 0
 
+    # Checks if the game has been won
     def check_victory(self):   
         count = 0
         total = self.squares_x * self.squares_y
@@ -159,6 +170,7 @@ class Game:
                     if self.grid[row][column].has_bomb:
                         self.grid[row][column].has_flag = True
         
+    # Counts the total number of flags placed
     def count_flags(self):
         total_flags = 0
         for row in range(self.squares_y):
@@ -188,7 +200,6 @@ class Game:
                 self.check_victory()
             else:
                 self.game_lost = True
-        
         elif button == RIGHT_CLICK and not self.game_won:
             if not self.grid[row][column].has_flag:
                 if self.flag_count < self.num_bombs and not self.grid[row][column].is_visible:
@@ -197,9 +208,8 @@ class Game:
                 self.grid[row][column].has_flag = False
             self.count_flags()
 
-# Game Sub-Class for each Cell of the grid
+# Class Cell representing each square of the grid
 class Cell:
-
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -210,7 +220,7 @@ class Cell:
         self.test = False
         self.has_flag = False
 
-    # Handle for the number of bombs text
+    # Display the number of bombs adjacent to a Cell
     def show_text(self):
         if self.is_visible:
             if self.bomb_count == 0:
@@ -219,7 +229,7 @@ class Cell:
                 self.text = font.render(str(self.bomb_count), True, BLACK)
             screen.blit(self.text, (self.x * (WIDTH + MARGIN) + 17, self.y * (HEIGHT + MARGIN) + 13 + MENU_SIZE))
         
-    # Counts how many bombs are next to this cell (3x3)
+    # Counts how many bombs are next to a particular cell (3x3)
     def count_bombs(self, squaresx, squaresy):
         if not self.test:
             self.test = True
@@ -231,7 +241,7 @@ class Cell:
                             and game.grid[row][column].has_bomb):
                                 self.bomb_count += 1
         
-    # Open all cells next to the clicked cell with zero bombs nearby
+    # Open all cells with zero bombs next to the clicked cell
     def open_neighbours(self, squaresx, squaresy):
         column = self.x
         row = self.y
@@ -246,7 +256,7 @@ class Cell:
                             if game.grid[row + row_off][column + column_off].bomb_count == 0: 
                                 game.grid[row + row_off][column + column_off].open_neighbours(game.squares_y, game.squares_x)
 
-
+# Class that represents menu
 class Menu():
     def __init__(self,NSQUARES):
         self.width = pygame.display.get_surface().get_width() - 2*MARGIN
@@ -290,6 +300,7 @@ class Menu():
         elif obj.game_won:
             self.label_game_end.show(screen, "You Won!")
    
+    # Menu sub-class
     class Label:
         def __init__(self, x, y):
             self.x = x
@@ -301,6 +312,7 @@ class Menu():
             self.text = font.render(text, True, BLACK)     
             surface.blit(self.text, (self.x, self.y))
     
+    # Menu sub-class
     class Button:
         def __init__(self, x, y, width, height, text, xoff=0, yoff=0):
             self.x=x
@@ -324,7 +336,7 @@ class Menu():
             else:
                 return False
 
-# Initialize pygame and sets screen size and caption
+# Function that opens a window at the centre of the screen
 def center_window(window, width, height):
     screen_width=window.winfo_screenwidth()
     screen_height=window.winfo_screenheight()
@@ -332,6 +344,7 @@ def center_window(window, width, height):
     y=(screen_height - height) // 2
     window.geometry(f"{width}x{height}+{x}+{y}")
 
+# Function that allows player to choose level of difficulty
 def start():
     def level_nsquares1():
         global NSQUARES
@@ -358,7 +371,8 @@ def start():
         level.destroy()
         pygame.quit()
         sys.exit()
-
+    
+    # Create a tkinter window
     level = Tk()
     level.title("Minesweeper")
     center_window(level, 500, 500)
@@ -366,7 +380,7 @@ def start():
     canvas = Canvas(level, width=500, height=500)
     canvas.pack()
     # Load the image
-    image=Image.open("background1.png")
+    image = Image.open("background1.png")
     # Resize the image to fit the canvas
     resized_image = image.resize((500, 500), Image.LANCZOS)
     # Convert the image to PhotoImage
@@ -381,6 +395,7 @@ def start():
     level.protocol("WM_DELETE_WINDOW", on_closing)
     level.mainloop()
 
+# Function that opens window after game is lost or won
 def over(game):
     def Restart():
         global proceed
@@ -407,6 +422,7 @@ def over(game):
         sys.exit()
         
     if game.game_won and NSQUARES == 12:
+        # Create a tkinter window
         over = Tk()
         over.title("Minesweeper")
         center_window(over, 500, 500)
@@ -428,6 +444,7 @@ def over(game):
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
     elif game.game_won and (NSQUARES == 8 or NSQUARES == 10):
+        # Create a tkinter window
         over = Tk()
         over.geometry("500x500")
         over.title("Minesweeper")
@@ -450,6 +467,7 @@ def over(game):
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
     elif game.game_lost:
+        # Create a tkinter window
         over = Tk()
         over.geometry("500x500")
         over.title("Minesweeper")
@@ -473,15 +491,15 @@ def over(game):
         over.mainloop()
     
     
-NSQUARES = 0
-NBOMBS = 0
-proceed = ""
+
+# start() function is called to start the game
 start()
-game_over = False
-click_count = 0
+
 # Main loop
 while True:
+    # Pygame is initialized
     pygame.init()
+    # Set the caption of the pygame window
     pygame.display.set_caption("Minesweeper")
     # Font to use in the entire game
     font = pygame.font.Font('freesansbold.ttf', 24)
@@ -512,24 +530,27 @@ while True:
                     game.click_handle(row, column, event.button)
                 else:
                     menu.click_handle(game)
-                if game.game_lost or game.game_won:
-                    click_count += 1
-                    game_over = True
-            # Event for screen resize    
+            # Event for screen resize
             elif event.type == pygame.VIDEORESIZE:
                 if game.resize: 
                     game.adjust_grid(event.w, event.h)
                     game.reset_game()
                 else:  
                     game.resize = True
+            # Deal with game loss or win
+            if game.game_lost or game.game_won:
+                click_count += 1
+                game_over = True
         game.draw()
         menu.draw(game)
         clock.tick(60)
         # Update the screen
         pygame.display.flip()
+        # Break from loop if game is over and user clicks on screen
         if game_over and click_count == 2:
             pygame.quit()
             break        
+    # Function that opens window after game is done
     over(game)
     if proceed == "next level":
         game_over = False
