@@ -458,7 +458,7 @@ def over(game):
         canvas=Canvas(over, width=500, height=500)
         canvas.pack()
         # Load the image
-        image=Image.open("background2.png")
+        image = Image.open("background2.png")
         # Resize the image to fit the canvas
         resized_image=image.resize((500, 500), Image.LANCZOS)
         # Convert the image to PhotoImage
