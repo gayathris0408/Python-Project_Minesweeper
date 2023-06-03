@@ -88,22 +88,7 @@ class Game:
                                 (MARGIN + HEIGHT) * row + MARGIN + MENU_SIZE,
                                 WIDTH, HEIGHT])
                 self.grid[row][column].show_text()
-        
-    # Adjusts the grid when the screen size has changed
-    def adjust_grid(self, sizex, sizey):
-        global screen
-        self.squares_x = (sizex - MARGIN) // (WIDTH + MARGIN)
-        self.squares_y = (sizey - MARGIN - MENU_SIZE) // (HEIGHT + MARGIN)
-        if self.squares_x < 8:
-            self.squares_x = 8
-        if self.squares_y < 8:
-            self.squares_y = 8
-        if self.num_bombs > (self.squares_x * self.squares_y) // 3:
-            self.num_bombs = self.squares_x * self.squares_y // 3
-        self.grid = [[Cell(x, y) for x in range(self.squares_x)] for y in range(self.squares_y)]
-        size = ((self.squares_x*(WIDTH + MARGIN) + MARGIN), (self.squares_y*(HEIGHT + MARGIN) + MARGIN + MENU_SIZE))
-        screen = pygame.display.set_mode(size, pygame.RESIZABLE)
-
+                
     # Makes all cells visible when user loses
     def game_over(self):
         for row in range(self.squares_y):
@@ -373,6 +358,7 @@ def start():
     
     # Create a tkinter window
     level = Tk()
+    level.resizable(False, False)
     level.title("Minesweeper")
     center_window(level, 500, 500)
     # Create a canvas widget
@@ -423,6 +409,7 @@ def over(game):
     if game.game_won and NSQUARES == 12:
         # Create a tkinter window
         over = Tk()
+        over.resizable(False, False)
         over.title("Minesweeper")
         center_window(over, 500, 500)
         # Create a canvas widget
@@ -445,6 +432,7 @@ def over(game):
     elif game.game_won and (NSQUARES == 8 or NSQUARES == 10):
         # Create a tkinter window
         over = Tk()
+        over.resizable(False, False)
         over.geometry("500x500")
         over.title("Minesweeper")
         center_window(over, 500, 500)
@@ -468,6 +456,7 @@ def over(game):
     elif game.game_lost:
         # Create a tkinter window
         over = Tk()
+        over.resizable(False, False)
         over.geometry("500x500")
         over.title("Minesweeper")
         center_window(over, 500, 500)
@@ -503,7 +492,7 @@ while True:
     # Font to use in the entire game
     font = pygame.font.Font('freesansbold.ttf', 24)
     size = (NSQUARES*(WIDTH + MARGIN) + MARGIN, (NSQUARES*(HEIGHT + MARGIN) + MARGIN) + MENU_SIZE)
-    screen = pygame.display.set_mode(size, pygame.RESIZABLE)
+    screen = pygame.display.set_mode(size)
     # Create instances for Game and Menu
     game = Game(NSQUARES, NBOMBS)
     menu = Menu(NSQUARES)
@@ -533,13 +522,6 @@ while True:
                 if game.game_lost or game.game_won:
                     click_count += 1
                     game_over = True
-            # Event for screen resize
-            elif event.type == pygame.VIDEORESIZE:
-                if game.resize: 
-                    game.adjust_grid(event.w, event.h)
-                    game.reset_game()
-                else:  
-                    game.resize = True
             
         game.draw()
         menu.draw(game)
