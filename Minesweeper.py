@@ -314,22 +314,22 @@ class Menu():
     # Menu sub-class
     class Button:
         def __init__(self, x, y, width, height, text, xoff=0, yoff=0):
-            self.x=x
-            self.y=y
-            self.height=height
-            self.width=width
-            self.background=WHITE
-            self.text=text
-            self.x_offset=xoff
-            self.y_offset=yoff
+            self.x = x
+            self.y = y
+            self.height = height
+            self.width = width
+            self.background = WHITE
+            self.text = text
+            self.x_offset = xoff
+            self.y_offset = yoff
 
         def draw(self, surface):
             pygame.draw.ellipse(surface, self.background, [self.x, self.y, self.width, self.height], 0)
-            text=font.render(self.text, True, BLACK)     
+            text = font.render(self.text, True, BLACK)     
             surface.blit(text, (self.x + self.x_offset, self.y + self.y_offset))
         
         def click_handle(self):
-            pos=pygame.mouse.get_pos()
+            pos = pygame.mouse.get_pos()
             if pos[0] > self.x and pos[1] > self.y and pos[0] < (self.x + self.width) and pos[1] < (self.y + self.height):
                 return True
             else:
@@ -337,10 +337,10 @@ class Menu():
 
 # Function that opens a window at the centre of the screen
 def center_window(window, width, height):
-    screen_width=window.winfo_screenwidth()
-    screen_height=window.winfo_screenheight()
-    x=(screen_width - width) // 2
-    y=(screen_height - height) // 2
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    x = (screen_width - width) // 2
+    y = (screen_height - height) // 2
     window.geometry(f"{width}x{height}+{x}+{y}")
 
 # Function that allows player to choose level of difficulty
