@@ -6,5 +6,5 @@ The aim of this project was to take an already existing code of the game, “Min
 * Lekhana Lalam 
 * Sowmya Nelapudi 
 ## References
-This is the basic code that we further modified:
+This is the code that we further modified:
 https://github.com/raulzitoe/Minesweeper
