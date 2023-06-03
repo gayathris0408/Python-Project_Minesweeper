@@ -281,9 +281,9 @@ class Menu():
         self.label_flags = self.Label(self.width - 50, 10)
 
     def click_handle(self, obj):
-        if self.btn_minus.click_handle():
+        if self.btn_minus.click_handle() and obj.init == False:
             obj.change_num_bombs(-1)
-        if self.btn_plus.click_handle():
+        if self.btn_plus.click_handle() and obj.init == False:
             obj.change_num_bombs(1)
         
     def draw(self, obj):
