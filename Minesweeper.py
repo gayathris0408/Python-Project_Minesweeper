@@ -7,7 +7,7 @@
 import pygame
 import sys
 from random import randrange
-from tkinter import Tk, Label, Button, Canvas
+from tkinter import *
 from PIL import Image, ImageTk
 
 # Colors used
