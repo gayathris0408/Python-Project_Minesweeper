@@ -7,7 +7,6 @@
 import pygame
 import sys
 from random import randrange
-from tkinter import *
 from tkinter import Tk, Label, Button, Canvas
 from PIL import Image, ImageTk
 
