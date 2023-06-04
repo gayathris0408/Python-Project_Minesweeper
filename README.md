@@ -8,6 +8,7 @@ The aim of this project was to take an already existing code of the game, “Min
 ## References
 This is the code that we further modified:
 https://github.com/raulzitoe/Minesweeper
+
 Other sites referred to:
 * https://www.pygame.org/docs/index.html
 * https://realpython.com/pygame-a-primer/
