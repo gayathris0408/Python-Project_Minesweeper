@@ -8,3 +8,14 @@ The aim of this project was to take an already existing code of the game, “Min
 ## References
 This is the code that we further modified:
 https://github.com/raulzitoe/Minesweeper
+Other sites referred to:
+>>>https://www.pygame.org/docs/index.html
+>>>https://realpython.com/pygame-a-primer/
+>>>https://www.geeksforgeeks.org/python-gui-tkinter/
+>>>https://www.geeksforgeeks.org/how-to-close-a-tkinter-window-with-a-button/
+>>>https://www.tutorialspoint.com/python/tk_button.htm
+>>>https://www.geeksforgeeks.org/python-tkinter-label/
+>>>https://www.tutorialspoint.com/how-to-make-a-tkinter-window-not-resizable
+>>>https://stackoverflow.com/questions/111155/how-do-i-handle-the-window-close-event-in-tkinter
+>>>https://www.geeksforgeeks.org/how-to-use-images-as-backgrounds-in-tkinter/
+>>>https://stackoverflow.com/questions/14910858/how-to-specify-where-a-tkinter-window-opens
