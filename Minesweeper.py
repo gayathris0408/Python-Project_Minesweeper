@@ -538,3 +538,4 @@ while True:
     if proceed == "try again":
         game_over = False
         click_count = 0
+
