@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import pygame
 import sys
 from random import randrange
@@ -88,7 +82,7 @@ class Game:
                                 (MARGIN + HEIGHT) * row + MARGIN + MENU_SIZE,
                                 WIDTH, HEIGHT])
                 self.grid[row][column].show_text()
-                
+
     # Makes all cells visible when user loses
     def game_over(self):
         for row in range(self.squares_y):
@@ -104,7 +98,7 @@ class Game:
             self.num_bombs = 1
         elif self.num_bombs > (self.squares_x * self.squares_y) // 3:
             self.num_bombs = self.squares_x * self.squares_y // 3
-    
+
    # Place bombs on random squares
     def place_bombs(self, row, column):
         bombplaced = 0
@@ -124,7 +118,7 @@ class Game:
         for row in range(self.squares_y):
             for column in range(self.squares_x):
                 self.grid[row][column].count_bombs(self.squares_y, self.squares_x)
-    
+
     # Restarts the game
     def reset_game(self):
         for row in range(self.squares_y):
@@ -153,7 +147,7 @@ class Game:
                 for column in range(self.squares_x):
                     if self.grid[row][column].has_bomb:
                         self.grid[row][column].has_flag = True
-        
+
     # Counts the total number of flags placed
     def count_flags(self):
         total_flags = 0
@@ -270,9 +264,9 @@ class Menu():
             obj.change_num_bombs(-1)
         if self.btn_plus.click_handle() and obj.init == False:
             obj.change_num_bombs(1)
-        
+
     def draw(self, obj):
-        self.width = pygame.display.get_surface().get_width() - 2*MARGIN 
+        self.width = pygame.display.get_surface().get_width() - 2*MARGIN
         pygame.draw.rect(screen, TURQUOISE, [MARGIN, 0, self.width, MENU_SIZE])
         self.btn_minus.draw(screen)
         self.btn_plus.draw(screen)
@@ -283,19 +277,19 @@ class Menu():
             self.label_game_end.show(screen, "Game Over")
         elif obj.game_won:
             self.label_game_end.show(screen, "You Won!")
-   
+
     # Menu sub-class
     class Label:
         def __init__(self, x, y):
             self.x = x
             self.y = y
             self.text = ""
-        
-        def show(self, surface, value): 
+
+        def show(self, surface, value):
             text = str(value)
-            self.text = font.render(text, True, BLACK)     
+            self.text = font.render(text, True, BLACK)
             surface.blit(self.text, (self.x, self.y))
-    
+
     # Menu sub-class
     class Button:
         def __init__(self, x, y, width, height, text, xoff=0, yoff=0):
@@ -310,9 +304,9 @@ class Menu():
 
         def draw(self, surface):
             pygame.draw.ellipse(surface, self.background, [self.x, self.y, self.width, self.height], 0)
-            text = font.render(self.text, True, BLACK)     
+            text = font.render(self.text, True, BLACK)
             surface.blit(text, (self.x + self.x_offset, self.y + self.y_offset))
-        
+
         def click_handle(self):
             pos = pygame.mouse.get_pos()
             if pos[0] > self.x and pos[1] > self.y and pos[0] < (self.x + self.width) and pos[1] < (self.y + self.height):
@@ -355,7 +349,7 @@ def start():
         level.destroy()
         pygame.quit()
         sys.exit()
-    
+
     # Create a tkinter window
     level = Tk()
     level.resizable(False, False)
@@ -400,12 +394,12 @@ def over(game):
     def Quit():
         over.destroy()
         sys.exit()
-        
+
     def On_Closing():
         over.destroy()
         pygame.quit()
         sys.exit()
-        
+
     if game.game_won and NSQUARES == 12:
         # Create a tkinter window
         over = Tk()
@@ -477,8 +471,6 @@ def over(game):
         Button(over, text="QUIT", command=Quit, width=20, fg="dark blue", font="Times 14", bd=2, bg="light blue", relief="groove").place(x=150, y=260)
         over.protocol("WM_DELETE_WINDOW", On_Closing)
         over.mainloop()
-    
-    
 
 # start() function is called to start the game
 start()
@@ -500,7 +492,7 @@ while True:
     while True:
         for event in pygame.event.get():
             # Closes the game if user clicked the X
-            if event.type == pygame.QUIT:  
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             # Mouse clicks event
@@ -511,7 +503,7 @@ while True:
                 column = position[0] // (WIDTH + MARGIN)
                 row = (position[1] - MENU_SIZE) // (HEIGHT + MARGIN)
                 if row >= game.squares_y:
-                    row=game.squares_y - 1
+                    row = game.squares_y - 1
                 if column >= game.squares_x:
                     column = game.squares_x - 1
                 if row >= 0:
@@ -522,7 +514,7 @@ while True:
                 if game.game_lost or game.game_won:
                     click_count += 1
                     game_over = True
-            
+    
         game.draw()
         menu.draw(game)
         clock.tick(60)
@@ -531,7 +523,7 @@ while True:
         # Break from loop if game is over and user clicks on screen
         if game_over and click_count == 2:
             pygame.quit()
-            break        
+            break
     # Function that opens window after game is done
     over(game)
     if proceed == "next level":
@@ -546,3 +538,4 @@ while True:
     if proceed == "try again":
         game_over = False
         click_count = 0
+ 
